@@ -1,1 +1,792 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для Бусинки ❤️</title>
 
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 20% 20%, #fff8f6 0, transparent 35%),
+        radial-gradient(circle at 80% 80%, #f8c9cf 0, transparent 35%),
+        linear-gradient(135deg, #f7d9dd, #f4bfc8);
+    color: #5d2632;
+}
+
+/* ---------- ОСНОВНЫЕ ЭКРАНЫ ---------- */
+
+.screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 22px;
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+}
+
+.card {
+    position: relative;
+    width: min(92vw, 430px);
+    min-height: 570px;
+    padding: 50px 30px 38px;
+    border-radius: 35px;
+
+    background: rgba(255,255,255,.84);
+    backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+        0 25px 70px rgba(108,35,51,.18);
+
+    text-align: center;
+    overflow: hidden;
+}
+
+.tiny {
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    color: #a76c78;
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-size: 39px;
+    line-height: 1.08;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    max-width: 310px;
+    margin: 0 auto 30px;
+
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+
+    color: #8c5a64;
+}
+
+.big-heart {
+    display: block;
+    font-size: 70px;
+    margin: 15px 0 25px;
+    animation: heartbeat 1.6s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+
+/* ---------- КНОПКИ ---------- */
+
+button {
+    border: none;
+    cursor: pointer;
+
+    padding: 16px 31px;
+    border-radius: 100px;
+
+    font-size: 15px;
+
+    transition:
+        transform .2s,
+        box-shadow .2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.main-button,
+.yes-button {
+    color: white;
+    background: #8f3047;
+
+    box-shadow:
+        0 10px 25px rgba(143,48,71,.25);
+}
+
+.choice {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    margin-top: 10px;
+}
+
+.no-button {
+    background: #eee4e6;
+    color: #744652;
+}
+
+/* ---------- ПРИГЛАШЕНИЕ ---------- */
+
+.date {
+    margin: 25px 0;
+
+    padding: 20px 10px;
+
+    border-top: 1px solid #e7c4ca;
+    border-bottom: 1px solid #e7c4ca;
+}
+
+.date-big {
+    font-size: 46px;
+    letter-spacing: 2px;
+}
+
+.time {
+    margin-top: 7px;
+
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    letter-spacing: 4px;
+
+    color: #9c5363;
+}
+
+.place {
+    margin-bottom: 26px;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+
+    color: #80535c;
+}
+
+.place strong {
+    color: #7c263b;
+}
+
+.small-heart {
+    position: absolute;
+    color: #b84460;
+    opacity: .4;
+}
+
+.h1 {
+    top: 25px;
+    left: 30px;
+    transform: rotate(-15deg);
+}
+
+.h2 {
+    top: 75px;
+    right: 28px;
+    transform: rotate(18deg);
+}
+
+.h3 {
+    bottom: 30px;
+    left: 35px;
+}
+
+/* ---------- ЛЕТАЮЩИЕ СЕРДЦА ---------- */
+
+.floating-heart {
+    position: fixed;
+    bottom: -50px;
+    z-index: 1000;
+
+    pointer-events: none;
+
+    animation: fly linear forwards;
+}
+
+@keyframes fly {
+    to {
+        transform:
+            translateY(-115vh)
+            rotate(35deg);
+
+        opacity: 0;
+    }
+}
+
+/* ==================================================
+   РЕЖИМ: ОН НАЖАЛ "НЕТ"
+================================================== */
+
+#chaos {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+
+    background: black;
+    color: white;
+
+    font-family: Arial, sans-serif;
+}
+
+.chaos-stage {
+    position: absolute;
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    text-align: center;
+}
+
+/* ТВОЯ ФОТОГРАФИЯ */
+
+#excuseStage {
+    background: black;
+}
+
+#excuseStage img {
+    width: min(90vw, 500px);
+    max-height: 72vh;
+
+    object-fit: contain;
+
+    border-radius: 15px;
+}
+
+.what {
+    margin-bottom: 20px;
+
+    font-weight: 900;
+    font-size: clamp(32px, 8vw, 70px);
+
+    letter-spacing: 2px;
+}
+
+/* ERROR */
+
+#errorStage {
+    background: #050505;
+}
+
+.error-title {
+    font-family: monospace;
+    font-size: clamp(45px, 12vw, 100px);
+
+    color: #ff3030;
+
+    animation: glitch .15s infinite;
+}
+
+.error-text {
+    margin-top: 20px;
+
+    font-family: monospace;
+    font-size: 17px;
+
+    color: white;
+}
+
+@keyframes glitch {
+
+    0% {
+        transform: translate(0);
+    }
+
+    25% {
+        transform: translate(-5px, 3px);
+    }
+
+    50% {
+        transform: translate(5px, -3px);
+    }
+
+    75% {
+        transform: translate(-3px, -4px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* МЕМ */
+
+#memeStage {
+    background: black;
+}
+
+#memeStage img {
+    width: min(95vw, 520px);
+    max-height: 92vh;
+
+    object-fit: contain;
+}
+
+/* ---------- ФИНАЛ ПОСЛЕ ДА ---------- */
+
+.success {
+    font-family: Arial, sans-serif;
+
+    margin-top: 25px;
+
+    font-size: 14px;
+    line-height: 1.7;
+
+    color: #8f3047;
+
+    animation: appear .8s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-height: 650px) {
+
+    .card {
+        min-height: auto;
+        padding-top: 32px;
+    }
+
+    h1 {
+        font-size: 31px;
+    }
+
+    .big-heart {
+        font-size: 52px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- =========================
+     ЭКРАН 1
+========================= -->
+
+<section class="screen" id="startScreen">
+
+    <div class="card">
+
+        <span class="small-heart h1">♥</span>
+        <span class="small-heart h2">♥</span>
+        <span class="small-heart h3">♥</span>
+
+        <div class="tiny">
+            специально для тебя
+        </div>
+
+        <span class="big-heart">
+            💌
+        </span>
+
+        <h1>
+            Бусинка,<br>
+            у тебя приглашение
+        </h1>
+
+        <p class="subtitle">
+            Кажется, кто-то очень хочет провести
+            с тобой один особенный вечер.
+        </p>
+
+        <button
+            class="main-button"
+            onclick="openInvitation()">
+
+            Открыть приглашение ♥
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ЭКРАН 2
+========================= -->
+
+<section
+    class="screen hidden"
+    id="inviteScreen">
+
+    <div class="card">
+
+        <span class="small-heart h1">♥</span>
+        <span class="small-heart h2">♥</span>
+
+        <div class="tiny">
+            наше маленькое свидание
+        </div>
+
+        <h1>
+            У меня есть планы<br>
+            на тебя ❤️
+        </h1>
+
+        <p class="subtitle">
+            Поэтому ничего не планируй
+            на этот вечер.<br>
+            Тебе нужно только быть готовым вовремя.
+        </p>
+
+        <div class="date">
+
+            <div class="date-big">
+                08.11
+            </div>
+
+            <div class="time">
+                18:00
+            </div>
+
+        </div>
+
+        <div class="place">
+
+            Место встречи:<br>
+
+            <strong>
+                пока секрет 🤫
+            </strong>
+
+        </div>
+
+
+        <div id="buttons">
+
+            <div class="choice">
+
+                <button
+                    class="yes-button"
+                    onclick="sayYes()">
+
+                    ДА ❤️
+
+                </button>
+
+
+                <button
+                    class="no-button"
+                    onclick="sayNo()">
+
+                    НЕТ
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="success"
+            class="success"
+            style="display:none;">
+
+            Правильный выбор 😌❤️
+            <br><br>
+
+            <strong>
+                08.11 в 18:00
+            </strong>
+
+            <br>
+
+            будь готов, Бусинка.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ХАОС ПОСЛЕ "НЕТ"
+========================= -->
+
+<div id="chaos">
+
+
+    <!-- 1. ЧТО ПРОСТИТЕ -->
+
+    <div
+        class="chaos-stage"
+        id="excuseStage">
+
+        <div class="what">
+            ЧТО, ПРОСТИТЕ?
+        </div>
+
+        <img
+            src="me.jpg"
+            alt="Что простите">
+
+    </div>
+
+
+    <!-- 2. ERROR -->
+
+    <div
+        class="chaos-stage"
+        id="errorStage">
+
+        <div class="error-title">
+            ERROR
+        </div>
+
+        <div class="error-text">
+
+            ОШИБКА В ВЫБОРЕ ОТВЕТА
+            <br><br>
+
+            код ошибки:
+            <strong>NO_IS_NOT_AN_OPTION</strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- 3. МЕМ -->
+
+    <div
+        class="chaos-stage"
+        id="memeStage">
+
+        <img
+            src="meme.png"
+            alt="Вот такая вот хуйня собачка">
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+/* ОТКРЫВАЕМ ПРИГЛАШЕНИЕ */
+
+function openInvitation() {
+
+    document
+        .getElementById("startScreen")
+        .classList.add("hidden");
+
+
+    setTimeout(function() {
+
+        document
+            .getElementById("inviteScreen")
+            .classList.remove("hidden");
+
+        hearts(20);
+
+    }, 450);
+
+}
+
+
+/* ===========================
+   ОН НАЖАЛ ДА
+=========================== */
+
+function sayYes() {
+
+    document
+        .getElementById("buttons")
+        .style.display = "none";
+
+
+    document
+        .getElementById("success")
+        .style.display = "block";
+
+
+    hearts(60);
+
+}
+
+
+/* ===========================
+   ОН ПОСМЕЛ НАЖАТЬ НЕТ
+=========================== */
+
+function sayNo() {
+
+    const chaos =
+        document.getElementById("chaos");
+
+    const excuse =
+        document.getElementById("excuseStage");
+
+    const error =
+        document.getElementById("errorStage");
+
+    const meme =
+        document.getElementById("memeStage");
+
+
+    chaos.style.display = "block";
+
+
+    excuse.style.display = "flex";
+    error.style.display = "none";
+    meme.style.display = "none";
+
+
+    /*
+       0–3 секунды:
+       ЧТО ПРОСТИТЕ + твоя фотография
+    */
+
+    setTimeout(function() {
+
+        excuse.style.display = "none";
+        error.style.display = "flex";
+
+    }, 3000);
+
+
+    /*
+       3–5 секунд:
+       ERROR
+    */
+
+    setTimeout(function() {
+
+        error.style.display = "none";
+        meme.style.display = "flex";
+
+    }, 5000);
+
+
+    /*
+       5–10 секунд:
+       мем
+    */
+
+    setTimeout(function() {
+
+        meme.style.display = "none";
+
+        chaos.style.display = "none";
+
+    }, 10000);
+
+}
+
+
+/* ===========================
+   СЕРДЕЧКИ
+=========================== */
+
+function hearts(amount) {
+
+    for (let i = 0; i < amount; i++) {
+
+        setTimeout(function() {
+
+            const heart =
+                document.createElement("div");
+
+            heart.className =
+                "floating-heart";
+
+
+            const symbols =
+                ["♥", "♡", "❤"];
+
+            heart.innerHTML =
+                symbols[
+                    Math.floor(
+                        Math.random() *
+                        symbols.length
+                    )
+                ];
+
+
+            heart.style.left =
+                Math.random() * 100 + "vw";
+
+
+            heart.style.fontSize =
+                (14 + Math.random() * 28)
+                + "px";
+
+
+            const colors = [
+                "#8f3047",
+                "#c4546e",
+                "#e28c9e",
+                "#a43b54"
+            ];
+
+            heart.style.color =
+                colors[
+                    Math.floor(
+                        Math.random() *
+                        colors.length
+                    )
+                ];
+
+
+            heart.style.animationDuration =
+                (3 + Math.random() * 3)
+                + "s";
+
+
+            document.body.appendChild(
+                heart
+            );
+
+
+            setTimeout(function() {
+
+                heart.remove();
+
+            }, 6500);
+
+
+        }, i * 70);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
